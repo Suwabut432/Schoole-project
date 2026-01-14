@@ -7,7 +7,10 @@ const classSchema = new mongoose.Schema({
     unique: true,
     trim: true
   },
-
+  section: {
+    type: String,
+    required: true,
+  },
   subjects: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Subject"
@@ -19,8 +22,7 @@ const classSchema = new mongoose.Schema({
   }],
 
   incharge: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Teacher",
+    type: String,
     required: true
   }
 

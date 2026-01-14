@@ -6,9 +6,9 @@ const attendanceSchema = new mongoose.Schema({
     ref: "Student",
     required: true
   },
-  subject: {
+  class: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Subject",
+    ref: "Class",
     required: true
   },
   date: {
@@ -22,4 +22,4 @@ const attendanceSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Attendance", attendanceSchema);
+module.exports = mongoose.model("StudentAttendance", attendanceSchema);

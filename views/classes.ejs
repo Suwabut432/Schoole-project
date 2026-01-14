@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Classes</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f8;
+      padding: 30px;
+    }
+
+    .class-box {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .class-box:hover {
+      background: #e9ecef;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>All Classes</h2>
+
+
+ <% classes.forEach(function(classe) { %>
+  <div class="class-box">
+    <strong> Class: <%= classe.name %></strong><br>
+   <% if(classe.incharge) { %>
+         Incharge: <%= classe.incharge %>
+  <% } else { %>
+    Incharge : No Incharge 
+ <% } %>
+  </div>
+ <% }) %>
+
+</body>
+</html>

@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const studentSchema = new mongoose.Schema({
   name:  {
     type: String,
+    trim: true,
+    set: value => {
+      if(!value) return value;
+      return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    },
     required: true
   },
   rollNo: {
@@ -27,7 +32,7 @@ const studentSchema = new mongoose.Schema({
     required: true
   },
   registration: {
-    type: Boolean,
+    type: String,
     default: false
   },
   performas: {
