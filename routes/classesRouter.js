@@ -5,7 +5,6 @@ const teacherModel = require("../models/teacher");
 
 router.get("/", async (req, res) => {
   const classes = await classModel.find();
-
   res.render("classes", { title: "Home Page", classes});
 });
 

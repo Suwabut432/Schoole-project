@@ -3,6 +3,10 @@ const router = express.Router();
 const teacherModel = require("../models/teacher");
 const bcrypt = require("bcrypt");
 const classModel = require("../models/class");
+exports.registerPage = async (req, res) => {
+  const classes = await classModel.find();
+  res.render("register", { title: "Home Page", classes });
+}
 
 exports.register = async (req, res) => {
   const { name, email, password, qualification, designation } = req.body;
@@ -26,6 +30,9 @@ exports.register = async (req, res) => {
   }
 }
 
+exports.loginPage =  (req, res) => {
+  res.render("login");
+}
 
 exports.login = async (req, res) => {
   const { name, email, password } = req.body;
