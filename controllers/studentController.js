@@ -14,10 +14,10 @@ exports.CreateStudent = async (req, res) => {
         rollNo,
         className,
         address,
-        contect,
+        contact,
         age,
         registration,
-        performas, } = req.body;
+        performance, } = req.body;
     try {
         const classe = await Class.findOne({ name: className });
         console.log(classe);
@@ -29,10 +29,10 @@ exports.CreateStudent = async (req, res) => {
             rollNo,
             className: classe._id,
             address,
-            contect,
+            contact,
             age,
             registration,
-            performas
+            performance
         })
         res.send(student);
     } catch (error) {
@@ -51,26 +51,33 @@ exports.SavedAttendence = async (req, res) => {
     const attendance = req.body.attendance;
 
     if (!attendance) {
-      return res.send("No attendance data");
+        return res.send("No attendance data");
     }
     try {
-        const today = new Date();
-        today.setDate(0,0,0,0)
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
 
         for (item of attendance) {
             const alreadyMarked = await studentAttendence.findOne({
                 student: item.studentId,
-                date: today
+                date: {$gte: start, $lte: end}
             })
 
             const student = await Student.findById(item.studentId);
             if (!alreadyMarked) {
-                await studentAttendence.create({
+                const createAttendence = await studentAttendence.create({
                     student: student._id,
                     class: student.className,
-                    date: today,
+                    date: new Date(),
                     status: item.status
                 })
+                await Student.updateOne(
+                    { _id: student._id },
+                    { $push: { attendance: createAttendence._id } }
+                );
             }
         }
         res.send("Attendence Saved Successfully.");
