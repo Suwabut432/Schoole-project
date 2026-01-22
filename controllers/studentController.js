@@ -5,10 +5,10 @@ const teacher = require("../models/teacher");
 const Student = require("../models/student");
 const studentAttendence = require("../models/studentAttendance");
 
+
 exports.CreateStudentPage = async (req, res) => {
     res.render("studentForm");
 }
-
 exports.CreateStudent = async (req, res) => {
     const { name,
         rollNo,
@@ -20,9 +20,8 @@ exports.CreateStudent = async (req, res) => {
         performance, } = req.body;
     try {
         const classe = await Class.findOne({ name: className });
-        console.log(classe);
         if (!classe) return res.send("Class Not Exist in this School.");
-        const existStudent = await Student.findOne({ rollNo });
+        const existStudent = await Student.findOne({ className: classe._id, rollNo });
         if (existStudent) return res.send("This RollNo Student Already Exist");
         const student = await Student.create({
             name,
@@ -34,54 +33,116 @@ exports.CreateStudent = async (req, res) => {
             registration,
             performance
         })
-        res.send(student);
+        const updateClass = classe.students.push(student._id)
+        classe.save();
+        res.redirect("/student/studentsDetail/" + student.className)
     } catch (error) {
         res.status(500).send(error.message);
     }
 }
-
-
 exports.AttendencePage = async (req, res) => {
-    const classes = await Class.find();
-    const students = await Student.find();
+    const classes = await Class.findById(req.params.classId);
+    const students = await Student.find({ className: req.params.classId }).sort({ rollNo: 1 });
     res.render("studentAttendence", { classes, students });
 }
-
-exports.SavedAttendence = async (req, res) => {
-    const attendance = req.body.attendance;
-
-    if (!attendance) {
-        return res.send("No attendance data");
-    }
+exports.markAttendance = async (req, res) => {
     try {
-        const start = new Date();
-        start.setHours(0, 0, 0, 0);
+        const { className, attendance } = req.body;
 
-        const end = new Date();
-        end.setHours(23, 59, 59, 999);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-        for (item of attendance) {
-            const alreadyMarked = await studentAttendence.findOne({
-                student: item.studentId,
-                date: {$gte: start, $lte: end}
-            })
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        const date  = today.getDate();
+        let record = await studentAttendence.findOne({ className });
 
-            const student = await Student.findById(item.studentId);
-            if (!alreadyMarked) {
-                const createAttendence = await studentAttendence.create({
-                    student: student._id,
-                    class: student.className,
-                    date: new Date(),
-                    status: item.status
-                })
-                await Student.updateOne(
-                    { _id: student._id },
-                    { $push: { attendance: createAttendence._id } }
-                );
+        if (!record) {
+            record = await studentAttendence.create({
+                className,
+                years: []
+            });
+        }
+
+        let yearObj = record.years.find(y => y.year === year);
+
+        if (!yearObj) {
+            record.years.push({ year, months: [] });
+            yearObj = record.years.find(y => y.year === year);
+        }
+
+        let monthObj = yearObj.months.find(m => m.month === month);
+
+        if (!monthObj) {
+            yearObj.months.push({ month, days: [] });
+            monthObj = yearObj.months.find(m => m.month === month);
+        }
+
+        let alreadyCount = 0;
+        for (const item of attendance) {
+            
+            const student = await Student.findOne({
+                _id: item.studentId,
+                className
+            });
+
+            if (!student) continue;
+
+            const alreadyMarked = monthObj.days.find(d =>
+                d.studentName.toString() === item.studentId &&
+                d.date.toDateString() === today.toDateString()
+            );
+
+            if (alreadyMarked) {
+                alreadyCount++;
+                continue;
+            }
+
+            monthObj.days.push({
+                studentName: item.studentId,
+                date: today,
+                status: item.status
+            });
+
+            if (!student.attendance.includes(record._id)) {
+                student.attendance.push(record._id);
+                await student.save();
             }
         }
-        res.send("Attendence Saved Successfully.");
+
+        await record.save();
+
+        if (alreadyCount > 0) {
+            return res.send("Some students were already marked, rest saved successfully");
+        }
+
+        res.send("Attendance saved successfully");
+
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error(error);
+        res.status(500).send("Something went wrong");
     }
+};
+exports.attendenceDetailPage = async (req, res) => {
+    const classe = await Class.findById(req.params.classId).populate({
+        path: "students",
+        options: { sort: { rollNo: 1 } },
+        papulate: {
+            path: "attendence",
+            model: "studentAttendence",
+        }
+    });
+    const attendence = await studentAttendence.findOne({ className: req.params.classId }).populate("className").populate({
+        path: "years.months.days.studentName",
+        model: "Student",
+    })
+
+    // console.log(classe.students);
+    res.render("classAttendenceDetail", { classe, attendence});
 }
+exports.studentsDetailPage = async (req, res) => {
+    const students = await Student.find({ className: req.params.classId }).sort({ rollNo: 1 });
+    const classes = await Class.findById(req.params.classId);
+    res.render("studentsDetail", { students, classes })
+}
+

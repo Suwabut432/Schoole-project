@@ -26,4 +26,5 @@ router.post("/create", async (req, res) => {
   res.redirect("/classes");
 })
 
+
 module.exports = router;

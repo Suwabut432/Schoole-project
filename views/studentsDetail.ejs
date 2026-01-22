@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Advanced Attendance</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      background: #eef1f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #1d2b64, #007bff);
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .logo {
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-home {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-home:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-add {
+      background: #fff;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .nav-add:hover {
+      background: #f1f1f1;
+      transform: translateY(-1px);
+    }
+
+
+    .container {
+      width: 80%;
+      margin: 40px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    select {
+      padding: 8px;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-link {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="logo">School System</div>
+    <ul>
+      <li><a href="/" class="nav-home">Home</a></li>
+      <li><a href="/student/attendence/<%= classes._id %>" class="nav-link">Student Attendence</a></li>
+      <li><a href="/student/createStudent" class="nav-add">+ Add Student</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h1>Students data Of Class <%= classes.name %>
+    </h1>
+    <button style="background-color: red ; margin-bottom: 15px; display: flex; justify-self: flex-end; "><a
+        style="text-decoration: none; color: #fff; font-weight: bolder;" href="/student/attendanceDetail/<%= classes._id %>">Attendance
+        Details</a></button>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>RollNo</th>
+        <th>Address</th>
+        <th>Contact</th>
+        <th>Age</th>
+        <th>Registration</th>
+        <th>Others</th>
+      </tr>
+      <% students.forEach((student, index)=> { %>
+        <tr>
+          <td>
+            <%= student.name %>
+          </td>
+          <td>
+            <%= student.rollNo %>
+          </td>
+          <td>
+            <%= student.address %>
+          </td>
+          <td>
+            <%= student.contact %>
+          </td>
+          <td>
+            <%= student.age %>
+          </td>
+          <td>
+            <%= student.registration %>
+          </td>
+          <td>
+            <a href="/student/AttendanceDetail/<%= student._id %>">More Details</a>
+          </td>
+        </tr>
+        <% }) %>
+    </table>
+    <button type="submit">Save Attendance</button>
+    </form>
+  </div>
+</body>
+
+</html>

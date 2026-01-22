@@ -1,11 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+    }
+
+  .navbar {
+    background: linear-gradient(135deg, #1d2b64, #007bff);
+    padding: 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar .logo {
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar ul li a {
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link {
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+
+  .nav-auth {
+    background: #fff;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .nav-auth:hover {
+    background: #f1f1f1;
+    transform: translateY(-1px);
+  }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 60px);
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 25px;
+      width: 350px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-box label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .login-box input,
+    .login-box select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .login-box button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .login-box button:hover {
+      background: #0056b3;
+    }
+  </style>
 </head>
-<body style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-    <h1 style="font-size: 50px;">Welcome Arkeans!</h1>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">School System</div>
+  <ul>
+    <li><a href="/" class="nav-link">Home</a></li>
+    <li><a href="/classes" class="nav-link">Classes</a></li>
+
+    <li><a href="/teacher/attendence" class="nav-link">Teacher Attendence</a></li>
+  </ul>
+</div>
+
+  <div class="container">
+    <h1 style="font-size: 100px;">Welcome Arkeans.</h1>
+  </div>
+
 </body>
+
 </html>

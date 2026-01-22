@@ -47,12 +47,10 @@
    <h1>Advanced Attendance System</h1>
    <form action="/student/attendence" method="POST">
      <label>Select Subject</label>
-     <select name="subjectId" required>
-       <% classes.forEach(classe => { %>
-         <option value="<%= classe._id %>">
-           <%= classe.name %>
+     <select name="className" required>
+         <option value="<%= classes._id %>">
+           <%= classes.name %>
          </option>
-       <% }) %>
      </select>
      <table>
        <tr>

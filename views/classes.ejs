@@ -5,42 +5,123 @@
   <title>Classes</title>
   <style>
     body {
-      font-family: Arial;
-      background: #f4f6f8;
-      padding: 30px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #1d2b64, #007bff);
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .logo {
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-home {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-home:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-add {
+      background: #fff;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .nav-add:hover {
+      background: #f1f1f1;
+      transform: translateY(-1px);
+    }
+
+    .container {
+      padding: 40px;
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+      color: #333;
     }
 
     .class-box {
       background: #fff;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      cursor: pointer;
+      padding: 18px;
+      margin-bottom: 15px;
+      border-radius: 8px;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      transition: all 0.25s ease;
+    }
+
+    .class-box strong {
+      font-size: 16px;
+      color: #007bff;
     }
 
     .class-box:hover {
-      background: #e9ecef;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      background: #f9fbff;
     }
   </style>
 </head>
 
 <body>
 
-  <h2>All Classes</h2>
-
-
- <% classes.forEach(function(classe) { %>
-  <div class="class-box">
-    <strong> Class: <%= classe.name %></strong><br>
-   <% if(classe.incharge) { %>
-         Incharge: <%= classe.incharge %>
-  <% } else { %>
-    Incharge : No Incharge 
- <% } %>
+  <div class="navbar">
+    <div class="logo">School System</div>
+    <ul>
+      <li><a href="/" class="nav-home">Home</a></li>
+      <li><a href="/classes/create" class="nav-add">+ Add Class</a></li>
+    </ul>
   </div>
- <% }) %>
+
+
+  <div class="container">
+    <h2>All Classes</h2>
+
+    <% classes.forEach(function(classe) { %>
+      <a style="text-decoration: none;" href="/student/studentsDetail/<%= classe._id %>">
+      <div class="class-box">
+        <strong>Class: <%= classe.name %></strong><br><br>
+        <% if (classe.incharge) { %>
+          Incharge: <%= classe.incharge %>
+        <% } else { %>
+          Incharge: No Incharge
+        <% } %>
+      </div>
+    <% }) %>
+    </a>
+  </div>
 
 </body>
 </html>

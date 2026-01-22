@@ -3,15 +3,73 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Register</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #f4f6f8;
+      margin: 0;
+    }
+
+  .navbar {
+    background: linear-gradient(135deg, #1d2b64, #007bff);
+    padding: 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar .logo {
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar ul li a {
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link {
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+
+  .nav-auth {
+    background: #fff;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .nav-auth:hover {
+    background: #f1f1f1;
+    transform: translateY(-1px);
+  }
+
+    .container {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: calc(100vh - 60px);
     }
 
     .login-box {
@@ -61,33 +119,45 @@
 
 <body>
 
-  <div class="login-box">
-    <h2>Register</h2>
+<div class="navbar">
+  <div class="logo">School System</div>
+  <ul>
+    <li><a href="/" class="nav-link">Home</a></li>
+    <li><a href="/classes" class="nav-link">Classes</a></li>
+    <li><a href="/student/attendence" class="nav-link">Student Attendence</a></li>
+    <li><a href="/teacher/attendence" class="nav-link">Teacher Attendence</a></li>
+  </ul>
+</div>
 
-    <form action="/teacher/register" method="POST">
+  <div class="container">
+    <div class="login-box">
+      <h2>Register</h2>
 
-      <label>Name</label>
-      <input type="text" name="name" required>
+      <form action="/teacher/register" method="POST">
 
-      <label>Email</label>
-      <input type="email" name="email" required>
+        <label>Name</label>
+        <input type="text" name="name" required>
 
-      <label>Password</label>
-      <input type="password" name="password" required>
+        <label>Email</label>
+        <input type="email" name="email" required>
 
-      <label>Qualification</label>
-      <input type="text" name="qualification" required>
+        <label>Password</label>
+        <input type="password" name="password" required>
 
-      <label>Designation</label>
-      <select name="designation" required>
-        <option value="">Select</option>
-        <option value="teacher">Teacher</option>
-        <option value="helper">Helper</option>
-        <option value="manager">Manager</option>
-      </select>
+        <label>Qualification</label>
+        <input type="text" name="qualification" required>
 
-      <button type="submit">Login</button>
-    </form>
+        <label>Designation</label>
+        <select name="designation" required>
+          <option value="">Select</option>
+          <option value="teacher">Teacher</option>
+          <option value="helper">Helper</option>
+          <option value="manager">Manager</option>
+        </select>
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
   </div>
 
 </body>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h2, h3 {
+            text-align: center;
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .present {
+            color: green;
+            font-weight: bold;
+        }
+        .absent {
+            color: red;
+            font-weight: bold;
+        }
+        .late {
+            color: orange;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <h2>Student Attendance Sheet</h2>
+    <h3>Year: <%= year %> | Month: <%= monthName %></h3>
+
+    <!-- Attendance Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Roll No</th>
+                <th>Student Name</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% if (studentsAttendance.length === 0) { %>
+            <tr>
+                <td colspan="5">No attendance record found</td>
+            </tr>
+        <% } else { %>
+            <% studentsAttendance.forEach((item, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.rollNo %></td>
+                    <td><%= item.name %></td>
+                    <td><%= item.date.toDateString() %></td>
+                    <td class="<%= item.status.toLowerCase() %>">
+                        <%= item.status %>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } %>
+        </tbody>
+    </table>
+
+</body>
+</html>
