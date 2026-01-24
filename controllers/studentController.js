@@ -43,7 +43,7 @@ exports.CreateStudent = async (req, res) => {
 exports.AttendencePage = async (req, res) => {
     const classes = await Class.findById(req.params.classId);
     const students = await Student.find({ className: req.params.classId }).sort({ rollNo: 1 });
-    res.render("studentAttendence", { classes, students });
+    res.render("classAttendence", { classes, students });
 }
 exports.markAttendance = async (req, res) => {
     try {
@@ -113,10 +113,10 @@ exports.markAttendance = async (req, res) => {
         await record.save();
 
         if (alreadyCount > 0) {
-            return res.send("Some students were already marked, rest saved successfully");
+            return res.redirect(`/student/attendanceDetail/${className}`);
         }
 
-        res.send("Attendance saved successfully");
+        res.redirect(`/student/attendanceDetail/${className}`);
 
     } catch (error) {
         console.error(error);

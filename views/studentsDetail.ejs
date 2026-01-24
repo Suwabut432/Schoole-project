@@ -3,11 +3,17 @@
 
 <head>
   <title>Advanced Attendance</title>
-  <link rel="stylesheet" href="/style.css">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background: #eef1f4;
-      font-family: Arial, sans-serif;
+      font-family: "Poppins", Arial, sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
     }
 
     .navbar {
@@ -30,8 +36,6 @@
       list-style: none;
       display: flex;
       gap: 15px;
-      margin: 0;
-      padding: 0;
     }
 
     .navbar ul li a {
@@ -63,45 +67,6 @@
       transform: translateY(-1px);
     }
 
-
-    .container {
-      width: 80%;
-      margin: 40px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-    }
-
-    h1 {
-      text-align: center;
-    }
-
-    select {
-      padding: 8px;
-      margin-bottom: 15px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 25px;
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
     .nav-link {
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.6);
@@ -109,6 +74,119 @@
 
     .nav-link:hover {
       background: rgba(255, 255, 255, 0.2);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #1d4ed8;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 25px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-red {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .btn-red:hover {
+      background: #dc2626;
+    }
+
+    .btn-blue {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .btn-blue:hover {
+      background: #2563eb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      text-align: center;
+      font-size: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #2563eb;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    tr:hover {
+      background: #e0f2fe;
+      transition: 0.3s;
+    }
+
+    a.details-link {
+      color: #3b82f6;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    a.details-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .container {
+        width: 95%;
+        padding: 20px;
+      }
+
+      th,
+      td {
+        font-size: 12px;
+        padding: 8px 6px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
@@ -119,56 +197,43 @@
     <div class="logo">School System</div>
     <ul>
       <li><a href="/" class="nav-home">Home</a></li>
-      <li><a href="/student/attendence/<%= classes._id %>" class="nav-link">Student Attendence</a></li>
+      <li><a href="/student/attendence/<%= classes._id %>" class="nav-link">Student Attendance</a></li>
       <li><a href="/student/createStudent" class="nav-add">+ Add Student</a></li>
     </ul>
   </div>
 
   <div class="container">
-    <h1>Students data Of Class <%= classes.name %>
-    </h1>
-    <button style="background-color: red ; margin-bottom: 15px; display: flex; justify-self: flex-end; "><a
-        style="text-decoration: none; color: #fff; font-weight: bolder;" href="/student/attendanceDetail/<%= classes._id %>">Attendance
-        Details</a></button>
+    <h1>Students of Class <%= classes.name %></h1>
+
+    <a href="/student/attendanceDetail/<%= classes._id %>" class="btn btn-red">Attendance Details</a>
+
     <table>
-      <tr>
-        <th>Name</th>
-        <th>RollNo</th>
-        <th>Address</th>
-        <th>Contact</th>
-        <th>Age</th>
-        <th>Registration</th>
-        <th>Others</th>
-      </tr>
-      <% students.forEach((student, index)=> { %>
+      <thead>
         <tr>
-          <td>
-            <%= student.name %>
-          </td>
-          <td>
-            <%= student.rollNo %>
-          </td>
-          <td>
-            <%= student.address %>
-          </td>
-          <td>
-            <%= student.contact %>
-          </td>
-          <td>
-            <%= student.age %>
-          </td>
-          <td>
-            <%= student.registration %>
-          </td>
-          <td>
-            <a href="/student/AttendanceDetail/<%= student._id %>">More Details</a>
-          </td>
+          <th>Name</th>
+          <th>Roll No</th>
+          <th>Address</th>
+          <th>Contact</th>
+          <th>Age</th>
+          <th>Registration</th>
+          <th>Others</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach((student)=> { %>
+        <tr>
+          <td><%= student.name %></td>
+          <td><%= student.rollNo %></td>
+          <td><%= student.address %></td>
+          <td><%= student.contact %></td>
+          <td><%= student.age %></td>
+          <td><%= student.registration %></td>
+          <td><a href="/student/AttendanceDetail/<%= student._id %>" class="details-link">More Details</a></td>
         </tr>
         <% }) %>
+      </tbody>
     </table>
-    <button type="submit">Save Attendance</button>
-    </form>
   </div>
-</body>
 
+</body>
 </html>

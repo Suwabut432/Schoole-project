@@ -1,30 +1,48 @@
 const mongoose = require("mongoose");
-const teacher = require("./teacher");
 
-const teacherAttendanceSchema = new mongoose.Schema({
-  teacher: {
+
+const daySchema = new mongoose.Schema({
+  teacherName: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher",
     required: true
   },
-  name: {
-    type: String,
-    required: true
-  },
-  // class: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Class",
-  //   required: true
-  // },
   date: {
+    type: Date,
+    required: true,
+  },
+  checkInTime: {
     type: Date,
     required: true
   },
-  status: {
-    type: String,
-    enum: ["Present", "Absent", "Late"],
-    required: true
+  checkOutTime: {
+    type: Date,
+    default: null
   }
-});
+})
 
-module.exports = mongoose.model("TeacherAttendance", teacherAttendanceSchema);
+const monthSchema = new mongoose.Schema({
+  month: {
+    type: Number,
+    min: 1,
+    max: 12,
+    required: true
+  },
+  days: [daySchema]
+})
+
+
+const yearSchema = new mongoose.Schema({
+  year: {
+    type: Number,
+    required: true
+  },
+  months: [monthSchema]
+})
+
+const attendanceSchema = new mongoose.Schema({
+  years: [yearSchema]
+}, { timestamps: true });
+
+
+module.exports = mongoose.model("TeacherAttendance", attendanceSchema);

@@ -1,160 +1,254 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Student Attendance</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f6f8;
-            padding: 30px;
-        }
+  <title>Student Attendance</title>
 
-        .Introcard,
-        .Yearcard {
-            background: #fff;
-            padding: 20px;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
 
-        .Yearcard {
-            text-align: center;
-        }
+    * { box-sizing: border-box; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            margin-bottom: 30px;
-        }
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      padding: 30px;
+      color: #1e293b;
+    }
 
-        th,
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
+    .Introcard {
+      background: var(--card);
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      animation: fadeUp 0.6s ease;
+    }
 
-        th {
-            background: #007bff;
-            color: #fff;
-        }
+    .H1 {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #dc2626;
+    }
 
-        .present {
-            background: #d4edda;
-            color: #155724;
-            font-weight: bold;
-        }
+    .year-section {
+      margin-bottom: 30px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
 
-        .absent {
-            background: #f8d7da;
-            color: #721c24;
-            font-weight: bold;
-        }
+    .year-header {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      color: #fff;
+      padding: 18px 22px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-        .late {
-            background-color: #fff3cd;
-            color: #856404;
-            font-weight: bold;
-        }
-    </style>
+    .year-content {
+      display: none;
+      background: #f8fafc;
+      padding: 20px;
+      animation: fadeUp 0.4s ease;
+    }
+
+    .month-card {
+      background: #fff;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .month-header {
+      padding: 14px 18px;
+      background: #e0e7ff;
+      color: #1e3a8a;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .month-content {
+      display: none;
+      padding: 16px;
+      animation: fadeUp 0.4s ease;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid var(--border);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    th {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+      transition: 0.3s;
+    }
+
+    .present {
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+    }
+
+    .absent {
+      background: #fee2e2;
+      color: #7f1d1d;
+      font-weight: 700;
+    }
+
+    .late {
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    .Holiday {
+      background: #f1f5f9;
+      color: #475569;
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="Introcard">
+    <h2>Class Attendance Detail</h2>
+    <p><strong>Class:</strong> <%= attendence.className?.name || "-" %></p>
+    <p><strong>Incharge:</strong> <%= attendence.className?.incharge || "-" %></p>
+  </div>
+<% if (!attendence) { %>
+  <h1 class="H1">Attendance Not Available</h1>
+<% } else { %>
 
-    <div class="Introcard">
-        <h2>Class Attendance Detail</h2>
-        <p><strong>Class Name:</strong>
-            <%= attendence.className?.name || "-" %>
-        </p>
-        <p><strong>Incharge:</strong>
-            <%= attendence.className?.incharge || "-" %>
-        </p>
-    </div>
 
-    <% const monthNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; %>
 
-        <% attendence.years.forEach(y=> { %>
+  <% const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; %>
 
-            <div class="Yearcard">
-                <h2>Year: <%= y.year %>
-                </h2>
-            </div>
+  <% attendence.years.forEach((y, yIndex) => { %>
 
-            <% y.months.forEach(m=> {
-                const totalDays = new Date(y.year, m.month + 1, 0).getDate();
+    <div class="year-section">
+      <div class="year-header" onclick="toggleSection('year-<%= yIndex %>')">
+        Year: <%= y.year %>
+      </div>
 
-                const studentMap = {};
-                m.days.forEach(att => {
-                if (!att.studentName) return;
-                const id = att.studentName._id.toString();
-                if (!studentMap[id]) {
-                studentMap[id] = att.studentName;
-                }
-                });
+      <div class="year-content" id="year-<%= yIndex %>">
 
-                const students = Object.values(studentMap).sort(
-                (a, b) => (a.rollNo || 0) - (b.rollNo || 0)
-                );
+        <% y.months.forEach((m, mIndex) => {
+          const totalDays = new Date(y.year, m.month + 1, 0).getDate();
+
+          const studentMap = {};
+          m.days.forEach(att => {
+            if (!att.studentName) return;
+            const id = att.studentName._id.toString();
+            if (!studentMap[id]) studentMap[id] = att.studentName;
+          });
+
+          const students = Object.values(studentMap).sort(
+            (a,b) => (a.rollNo || 0) - (b.rollNo || 0)
+          );
+        %>
+
+        <div class="month-card">
+          <div class="month-header"
+               onclick="toggleSection('month-<%= yIndex %>-<%= mIndex %>')">
+            Month: <%= monthNames[m.month] %>
+          </div>
+
+          <div class="month-content" id="month-<%= yIndex %>-<%= mIndex %>">
+
+            <table>
+              <tr>
+                <th>R.#</th>
+                <th>Name</th>
+                <% for (let d = 1; d <= totalDays; d++) { %>
+                  <th><%= d %></th>
+                <% } %>
+                <th>Total P</th>
+              </tr>
+
+              <% students.forEach(student => { %>
+              <tr>
+                <td><%= student.rollNo || "-" %></td>
+                <td><%= student.name || "-" %></td>
+
+                <% const dayStatus = {};
+                  m.days.forEach(att => {
+                    if (att.studentName && att.studentName._id.equals(student._id)) {
+                      const dayNum = att.date.getDate();
+                      dayStatus[dayNum] =
+                        att.status === "Present" ? "P" :
+                        att.status === "Holiday" ? "H" :
+                        att.status === "Absent" ? "A" : "L";
+                    }
+                  });
                 %>
 
-                <div class="Yearcard">
-                    <h2>Month: <%= monthNames[m.month] %>
-                    </h2>
-                </div>
+                <% for (let d = 1; d <= totalDays; d++) {
+                  const status = dayStatus[d] || "";
+                  const cls =
+                    status === "P" ? "present" :
+                    status === "A" ? "absent" :
+                    status === "L" ? "late" :
+                    status === "H" ? "Holiday" : "";
+                %>
+                  <td class="<%= cls %>"><%= status %></td>
+                <% } %>
 
-                <table>
-                    <tr>
-                        <th>R.#</th>
-                        <th>Name</th>
-                        <% for (let d=1; d <=totalDays; d++) { %>
-                            <th>
-                                <%= d %>
-                            </th>
-                            <% } %>
-                                <th>Total P</th>
-                    </tr>
+                <td><%= Object.values(dayStatus).filter(s => s === "P").length %></td>
+              </tr>
+              <% }) %>
+            </table>
 
-                    <% students.forEach(student=> { %>
-                        <tr>
-                            <td>
-                                <%= student.rollNo || "-" %>
-                            </td>
-                            <td>
-                                <%= student.name || "-" %>
-                            </td>
+          </div>
+        </div>
 
-                            <% const dayStatus={}; m.days.forEach(att=> {
-                                if (att.studentName && att.studentName._id.equals(student._id)) {
-                                const dayNum = att.date.getDate();
-                                dayStatus[dayNum] =
-                                att.status === "Present" ? "P" :
-                                att.status === "Late" ? "L" : "A";
-                                }
-                                });
-                                %>
+        <% }) %>
 
-                                <% for (let d=1; d <=totalDays; d++) { const status=dayStatus[d] || "" ; const
-                                    cls=status==="P" ? "present" : status==="A" ? "absent" : status==="L" ? "late" : ""
-                                    ; %>
-                                    <td class="<%= cls %>">
-                                        <%= status %>
-                                    </td>
-                                    <% } %>
+      </div>
+    </div>
 
-                                        <td>
-                                            <%= Object.values(dayStatus).filter(s=> s === "P").length %>
-                                        </td>
-                        </tr>
-                        <% }) %>
+  <% }) %>
 
-                </table>
+<% } %>
 
-                <% }) %>
-                    <% }) %>
+<script>
+  function toggleSection(id) {
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === "block" ? "none" : "block";
+  }
+</script>
 
 </body>
-
 </html>
